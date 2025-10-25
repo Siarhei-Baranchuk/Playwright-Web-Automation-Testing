@@ -14,14 +14,10 @@ export class DatePickerPage {
     await expect(calendarInputField).toHaveValue(dateToAssert);
   }
 
-  async selectDatepickerWithRangeFromToday(
-    startDayFromToday: number,
-    endDateFromToday: number,
-  ) {
+  async selectDatepickerWithRangeFromToday(startDayFromToday: number, endDateFromToday: number) {
     const calendarInputField = this.page.getByPlaceholder("Range Picker");
     await calendarInputField.click();
-    const dateToAssertStart =
-      await this.selectDateInCalendar(startDayFromToday);
+    const dateToAssertStart = await this.selectDateInCalendar(startDayFromToday);
     const dateToAssertEnd = await this.selectDateInCalendar(endDateFromToday);
     const dateToAssert = `${dateToAssertStart} - ${dateToAssertEnd}`;
     await expect(calendarInputField).toHaveValue(dateToAssert);
@@ -40,23 +36,14 @@ export class DatePickerPage {
     const expectedYear = date.getFullYear();
     const dateToAssert = `${expectedMonthShort} ${expectedDate}, ${expectedYear}`;
 
-    let calendarMonthAndYear = await this.page
-      .locator("nb-calendar-view-mode")
-      .textContent();
+    let calendarMonthAndYear = await this.page.locator("nb-calendar-view-mode").textContent();
     const expectedMonthAndYear = ` ${expectedMonthLong} ${expectedYear} `;
     while (!calendarMonthAndYear.includes(expectedMonthLong)) {
-      await this.page
-        .locator("nb-calendar-pageable-navigation [data-name='chevron-right']")
-        .click();
-      calendarMonthAndYear = await this.page
-        .locator("nb-calendar-view-mode")
-        .textContent();
+      await this.page.locator("nb-calendar-pageable-navigation [data-name='chevron-right']").click();
+      calendarMonthAndYear = await this.page.locator("nb-calendar-view-mode").textContent();
     }
 
-    this.page
-      .locator(".day-cell.ng-star-inserted")
-      .getByText(expectedDate, { exact: true })
-      .click();
+    await this.page.locator('.day-cell.ng-star-inserted:not(.bounding-month)').getByText(expectedDate, { exact: true }).click();
     return dateToAssert;
   }
 }

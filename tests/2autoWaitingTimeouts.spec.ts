@@ -15,6 +15,8 @@ test("auto waiting", async ({ page }) => {
   // wait for particular response
   await page.waitForResponse("http://uitestingplayground.com/ajaxdata");
 
+  await page.waitForLoadState("networkidle"); // state?: "load" | "domcontentloaded" | "networkidle"
+
   const text = await successButton.textContent();
   expect(text).toEqual("Data loaded with AJAX get request.");
 });

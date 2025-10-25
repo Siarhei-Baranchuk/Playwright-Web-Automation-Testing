@@ -1,12 +1,22 @@
 {
-    "typescript.tsdk": "./node_modules/typescript/lib",
-    "tslint.enable": false,
-    "html.format.contentUnformatted": "",
-    "editor.wordWrap": "bounded",
-    "editor.wordWrapColumn": 300,
-    "editor.wrappingStrategy": "simple",
-    "html.format.wrapLineLength": 2000,
-    "chat.editor.wordWrap": "on",
-    "editor.formatOnSave": true,
-    "editor.fontVariations": false
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "tslint.enable": false,
+  "html.format.contentUnformatted": "",
+  "editor.wordWrap": "on",
+  "editor.wordWrapColumn": 150,
+  "editor.wrappingStrategy": "simple",
+  "html.format.wrapLineLength": 2000,
+  "chat.editor.wordWrap": "on",
+  "editor.formatOnSave": false,
+  "editor.fontVariations": false,
+  "editor.fontSize": 13,
+  "files.autoSave": "onFocusChange",
+  "diffEditor.wordWrap": "on",
+  "editor.wrapOnEscapedLineFeeds": true,
+  "prettier.printWidth": 150
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnPaste": false,
+    "editor.formatOnType": false
+  }
 }

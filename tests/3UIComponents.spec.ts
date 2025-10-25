@@ -11,13 +11,11 @@ test.describe("Form Layouts page", () => {
   });
 
   test("Input fields", async ({ page }) => {
-    const usingGridEmailInput = page
-      .locator("nb-card", { hasText: "Using the Grid" })
-      .getByRole("textbox", { name: "Email" });
+    const usingGridEmailInput = page.locator("nb-card", { hasText: "Using the Grid" }).getByRole("textbox", { name: "Email" });
 
     await usingGridEmailInput.fill("test@test.com");
     await usingGridEmailInput.clear();
-    await usingGridEmailInput.type("test2@test.com");
+    await usingGridEmailInput.pressSequentially("test2@test.com");
 
     // generic assertions
     const inputValue = await usingGridEmailInput.inputValue();
@@ -33,27 +31,17 @@ test.describe("Form Layouts page", () => {
     });
 
     await usingGridForm.getByLabel("Option 1").check({ force: true });
-    await usingGridForm
-      .getByRole("radio", { name: "Option 1" })
-      .check({ force: true });
+    await usingGridForm.getByRole("radio", { name: "Option 1" }).check({ force: true });
 
-    expect(
-      await usingGridForm.getByRole("radio", { name: "Option 1" }).isChecked(),
-    ).toBeTruthy();
-    await expect(
-      usingGridForm.getByRole("radio", { name: "Option 1" }),
-    ).toBeChecked();
+    expect(await usingGridForm.getByRole("radio", { name: "Option 1" }).isChecked()).toBeTruthy();
 
-    await usingGridForm
-      .getByRole("radio", { name: "Option 2" })
-      .check({ force: true });
+    await expect(usingGridForm.getByRole("radio", { name: "Option 1" })).toBeChecked();
 
-    expect(
-      await usingGridForm.getByRole("radio", { name: "Option 1" }).isChecked(),
-    ).toBeFalsy();
-    expect(
-      await usingGridForm.getByRole("radio", { name: "Option 2" }).isChecked(),
-    ).toBeTruthy();
+    await usingGridForm.getByRole("radio", { name: "Option 2" }).check({ force: true });
+
+    expect(await usingGridForm.getByRole("radio", { name: "Option 1" }).isChecked()).toBeFalsy();
+
+    expect(await usingGridForm.getByRole("radio", { name: "Option 2" }).isChecked()).toBeTruthy();
   });
 });
 
@@ -61,17 +49,14 @@ test("Checkboxes", async ({ page }) => {
   await page.getByText("Modal & Overlays").click();
   await page.getByText("Toastr").click();
 
-  await page
-    .getByRole("checkbox", { name: "Hide on click" })
-    .uncheck({ force: true });
-  await page
-    .getByRole("checkbox", { name: "Prevent arising of duplicate toast" })
-    .check({ force: true });
+  await page.getByRole("checkbox", { name: "Hide on click" }).uncheck({ force: true });
+
+  await page.getByRole("checkbox", { name: "Prevent arising of duplicate toast" }).check({ force: true });
 
   const allBoxes = page.getByRole("checkbox");
   for (const box of await allBoxes.all()) {
-    await box.uncheck({ force: true });
-    expect(await box.isChecked()).toBeFalsy();
+    await box.check({ force: true });
+    expect(await box.isChecked()).toBeTruthy();
   }
 });
 
@@ -132,15 +117,9 @@ test("Dialog Box (from browser)", async ({ page }) => {
     dialog.accept();
   }); // listener - page.on, dialog - event
 
-  await page
-    .getByRole("table")
-    .locator("tr", { hasText: "mdo@gmail.com" })
-    .locator(".nb-trash")
-    .click();
+  await page.getByRole("table").locator("tr", { hasText: "mdo@gmail.com" }).locator(".nb-trash").click();
 
-  await expect(page.locator("table tr").first()).not.toHaveText(
-    "mdo@gmail.com",
-  );
+  await expect(page.locator("table tr").first()).not.toHaveText("mdo@gmail.com");
 });
 
 test("Web Tables", async ({ page }) => {
@@ -154,22 +133,15 @@ test("Web Tables", async ({ page }) => {
   await page.locator("input-editor").getByPlaceholder("Age").fill("77");
 
   await page.locator(".nb-checkmark").click();
-  await expect(
-    targetRow.locator(".ng-star-inserted").getByText("77"),
-  ).toHaveText("77");
+  await expect(targetRow.locator(".ng-star-inserted").getByText("77")).toHaveText("77");
 
   // 2 get the row based on the value in the specific column
   await page.locator(".ng2-smart-pagination-nav").getByText("2").click();
-  const targetRowById = page
-    .getByRole("row", { name: "11" })
-    .filter({ has: page.locator("td").nth(1).getByText("11") });
+  const targetRowById = page.getByRole("row", { name: "11" }).filter({ has: page.locator("td").nth(1).getByText("11") });
   await targetRowById.locator(".nb-edit").click();
 
   await page.locator("input-editor").getByPlaceholder("E-mail").click();
-  await page
-    .locator("input-editor")
-    .getByPlaceholder("E-mail")
-    .fill("test@test.com");
+  await page.locator("input-editor").getByPlaceholder("E-mail").fill("test@test.com");
 
   await page.locator(".nb-checkmark").click();
   await expect(targetRowById.locator("td").nth(5)).toHaveText("test@test.com");
@@ -186,9 +158,7 @@ test("Web Tables", async ({ page }) => {
       const cellValue = await row.locator("td").last().textContent();
 
       if (age == "200") {
-        expect(await page.getByRole("table").textContent()).toContain(
-          "No data found",
-        );
+        expect(await page.getByRole("table").textContent()).toContain("No data found");
       } else {
         expect(cellValue).toEqual(age);
       }
@@ -203,56 +173,50 @@ test("Date Picker", async ({ page }) => {
   const calendarInputField = page.getByPlaceholder("Form Picker");
   await calendarInputField.click();
 
+  await page.locator("[class='day-cell ng-star-inserted']").getByText("1", { exact: true }).click();
+  await expect(calendarInputField).toHaveValue("Oct 1, 2025");
+});
+
+test("Date Picker 2", async ({ page }) => {
+  await page.getByText("Forms").click();
+  await page.getByText("Datepicker").click();
+
+  const calendarInputField = page.getByPlaceholder("Form Picker");
+  await calendarInputField.click();
+
   let date = new Date();
   date.setDate(date.getDate() + 7);
   const expectedDate = date.getDate().toString();
-  const expectedMonthShort = date.toLocaleDateString("En-US", {
-    month: "short",
-  });
-  const expectedMonthLong = date.toLocaleDateString("En-US", {
-    month: "long",
-  });
+  const expectedMonthShort = date.toLocaleDateString("En-US", { month: "short" });
+  const expectedMonthLong = date.toLocaleDateString("En-US", { month: "long" });
   const expectedYear = date.getFullYear();
   const dateToAssert = `${expectedMonthShort} ${expectedDate}, ${expectedYear}`;
 
-  let calendarMonthAndYear = await page
-    .locator("nb-calendar-view-mode")
-    .textContent();
+  let calendarMonthAndYear = await page.locator("nb-calendar-view-mode").textContent();
   const expectedMonthAndYear = ` ${expectedMonthLong} ${expectedYear} `;
   while (!calendarMonthAndYear.includes(expectedMonthLong)) {
-    await page
-      .locator("nb-calendar-pageable-navigation [data-name='chevron-right']")
-      .click();
-    calendarMonthAndYear = await page
-      .locator("nb-calendar-view-mode")
-      .textContent();
+    await page.locator("nb-calendar-pageable-navigation [data-name='chevron-right']").click();
+    calendarMonthAndYear = await page.locator("nb-calendar-view-mode").textContent();
   }
 
-  page
-    .locator("[class='day-cell ng-star-inserted']")
-    .getByText(expectedDate, { exact: true })
-    .click();
+  page.locator("[class='day-cell ng-star-inserted']").getByText(expectedDate, { exact: true }).click();
   await expect(calendarInputField).toHaveValue(dateToAssert);
 });
 
-test("Sliders", async ({ page }) => {
+test("Sliders - Update attribute", async ({ page }) => {
   // Update attribute
-  // const tempGauge = page.locator(
-  //   "[tabtitle='Temperature'] ngx-temperature-dragger circle",
-  // );
-  // await tempGauge.evaluate((node) => {
-  //   node.setAttribute("cx", "232.630");
-  //   node.setAttribute("cy", "232.630");
-  // });
-  // await tempGauge.click();
-  // await expect(page.locator("[class='value temperature h1']")).toContainText(
-  //   "30",
-  // );
+  const tempGauge = page.locator("[tabtitle='Temperature'] ngx-temperature-dragger circle");
+  await tempGauge.evaluate((node) => {
+    node.setAttribute("cx", "232.630");
+    node.setAttribute("cy", "232.630");
+  });
+  await tempGauge.click();
+  await expect(page.locator("[class='value temperature h1']")).toContainText("30");
+});
 
+test("Sliders - Mouse movement", async ({ page }) => {
   // Mouse movement
-  const tempBox = page.locator(
-    "[tabtitle='Temperature'] ngx-temperature-dragger",
-  );
+  const tempBox = page.locator("[tabtitle='Temperature'] ngx-temperature-dragger");
   await tempBox.scrollIntoViewIfNeeded();
 
   const box = await tempBox.boundingBox();

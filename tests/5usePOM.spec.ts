@@ -1,7 +1,8 @@
 import { test, expect } from "@playwright/test";
-import { NavigationPage } from "..//page-objects/navigationPage";
+import { NavigationPage } from "../page-objects/navigationPage";
 import { FormLayoutsPage } from "../page-objects/formLayoutsPage";
 import { DatePickerPage } from "../page-objects/datepickerPage";
+
 test.beforeEach(async ({ page }) => {
   await page.goto("http://localhost:4200");
 });
@@ -22,17 +23,10 @@ test("Parametrized methods", async ({ page }) => {
   const datePickerPage = new DatePickerPage(page);
 
   await navigationPage.formLayoutsPage();
-  await formLayoutsPage.submitUsingGridFormWithCredentialsAndSelectOption(
-    "test@test.com",
-    "welcome",
-    "Option 2",
-  );
-  await formLayoutsPage.submitInlineFormWithNameEmailAndCheckbox(
-    "John Smith",
-    "jong@test.com",
-    true,
-  );
+  await formLayoutsPage.submitUsingGridFormWithCredentialsAndSelectOption("test@test.com", "welcome", "Option 2");
+  
+  await formLayoutsPage.submitInlineFormWithNameEmailAndCheckbox("John Smith", "jong@test.com", true);
   await navigationPage.datePickerPage();
-  await datePickerPage.selectCommonDatePickerDateFromToday(7);
+  await datePickerPage.selectCommonDatePickerDateFromToday(10);
   await datePickerPage.selectDatepickerWithRangeFromToday(6, 15);
 });

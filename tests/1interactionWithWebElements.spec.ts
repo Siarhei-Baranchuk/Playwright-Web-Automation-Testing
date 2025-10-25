@@ -25,8 +25,6 @@ test("Locator syntax rules, ID, Class, Attribete, ..", async ({ page }) => {
   );
 
   // combine different selectors e.x. Tag + Attribute + Class
-  page.locator("input[placeholder='Email'].shape-rectangle");
-
   // locators by Xpath (not recommended)
   page.locator("//*[id='inputEmail1']");
 

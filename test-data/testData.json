@@ -1,0 +1,19 @@
+{
+  "articles": {
+    "createArticle": {
+      "title": "Test Article Title",
+      "description": "Test Article Description",
+      "body": "Test Article body with some content here",
+      "tagList": ["testing", "playwright", "automation"]
+    },
+    "duplicateArticle": {
+      "title": "Duplicate Test Article Title",
+      "description": "Test Article Description",
+      "body": "Test Article body content",
+      "tagList": ["duplicate-test"]
+    }
+  },
+  "tags": {
+    "tags": ["Automation", "Playwright"]
+  }
+}
