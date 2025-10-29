@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.only("Drag and Drop with Iframe", async ({ page }) => {
+test("Drag and Drop with Iframe", async ({ page }) => {
   await page.goto("https://www.globalsqa.com/demo-site/draganddrop/");
 
   // Close cookie consent popup
