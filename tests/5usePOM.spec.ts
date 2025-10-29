@@ -4,7 +4,9 @@ import { FormLayoutsPage } from "../page-objects/formLayoutsPage";
 import { DatePickerPage } from "../page-objects/datepickerPage";
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("http://localhost:4200");
+  // url from .env file
+  // await page.goto(process.env.URL_5usePOM);
+    await page.goto("http://localhost:4200");
 });
 
 test("Navigate to form page", async ({ page }) => {
@@ -24,7 +26,7 @@ test("Parametrized methods", async ({ page }) => {
 
   await navigationPage.formLayoutsPage();
   await formLayoutsPage.submitUsingGridFormWithCredentialsAndSelectOption("test@test.com", "welcome", "Option 2");
-  
+
   await formLayoutsPage.submitInlineFormWithNameEmailAndCheckbox("John Smith", "jong@test.com", true);
   await navigationPage.datePickerPage();
   await datePickerPage.selectCommonDatePickerDateFromToday(10);

@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  playwright-tests:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: npx playwright test
+    volumes:
+      - ./playwright-report:/Playwright-Web-Automation-Testing/playwright-report
+      - ./allure-results:/Playwright-Web-Automation-Testing/allure-results
+    environment:
+      - BASE_URL=http://localhost:4200

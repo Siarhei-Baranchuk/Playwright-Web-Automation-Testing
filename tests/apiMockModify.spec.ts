@@ -210,8 +210,6 @@ test("Modify - add custom field to articles", async ({ page }) => {
 
     // Save original data for comparison
     originalData = JSON.parse(JSON.stringify(responseBody.articles[0]));
-    console.log("\n=== ORIGINAL ARTICLE DATA (from server) ===");
-    console.log(JSON.stringify(originalData, null, 2));
 
     // Add custom fields to all articles
     responseBody.articles.forEach((article: any) => {
@@ -219,9 +217,6 @@ test("Modify - add custom field to articles", async ({ page }) => {
       article.sponsorName = "Test Sponsor";
       article.premium = false;
     });
-
-    console.log("\n=== MODIFIED ARTICLE DATA (with custom fields) ===");
-    console.log(JSON.stringify(responseBody.articles[0], null, 2));
 
     await route.fulfill({
       body: JSON.stringify(responseBody),
@@ -238,21 +233,11 @@ test("Modify - add custom field to articles", async ({ page }) => {
   const apiResponse = await responsePromise;
   const responseBody = await apiResponse.json();
 
-  console.log("\n=== RECEIVED BY BROWSER ===");
-  console.log("Total articles:", responseBody.articles.length);
-  console.log("First article custom fields:");
-  console.log("  - isSponsored:", responseBody.articles[0].isSponsored);
-  console.log("  - sponsorName:", responseBody.articles[0].sponsorName);
-  console.log("  - premium:", responseBody.articles[0].premium);
-
   // Verify custom fields were added to the response
   expect(responseBody.articles.length).toBeGreaterThan(0);
   expect(responseBody.articles[0]).toHaveProperty("isSponsored", true);
   expect(responseBody.articles[0]).toHaveProperty("sponsorName", "Test Sponsor");
   expect(responseBody.articles[0]).toHaveProperty("premium", false);
-
-  console.log("\n✅ Custom fields successfully added to API response!");
-  console.log("⚠️  Note: These fields are in the data but NOT displayed in UI (UI only shows standard fields)");
 
   // Verify articles are loaded in UI
   await expect(page.locator("app-article-list h1").first()).toBeVisible();

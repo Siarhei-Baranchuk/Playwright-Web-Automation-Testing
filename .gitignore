@@ -28,7 +28,6 @@
 /connect.lock
 /coverage
 /libpeerconnection.log
-npm-debug.log
 testem.log
 /typings
 /docs
@@ -40,10 +39,40 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Playwright test artifacts
 /test-results/
 /playwright-report/
 /playwright/.cache/
-/test-results/
-/playwright-report/
 /blob-report/
-/playwright/.cache/
+/allure-results/
+/allure-report/
+screenshots/
+**/*-snapshots/**/*.actual.png
+**/*-snapshots/**/*.diff.png
+**/*-snapshots/**/*-actual.png
+**/*-snapshots/**/*-diff.png
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Docker
+docker-compose.override.yml
+*.tar
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~

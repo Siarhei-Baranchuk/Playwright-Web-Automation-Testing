@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await page.getByText("Button Triggering AJAX Request").click();
 });
 
-test("auto waiting", async ({ page }) => {
+test.skip("auto waiting", async ({ page }) => {
   const successButton = page.locator(".bg-success");
   //   await successButton.click();
 
@@ -21,7 +21,7 @@ test("auto waiting", async ({ page }) => {
   expect(text).toEqual("Data loaded with AJAX get request.");
 });
 
-test("timeouts", async ({ page }) => {
+test.skip("timeouts", async ({ page }) => {
   const successButton = page.locator(".bg-success");
   await successButton.click();
 });

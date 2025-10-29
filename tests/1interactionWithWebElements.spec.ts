@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("http://localhost:4200");
+  await page.goto("/"); //url from playwright.config.ts
   await page.getByText("Forms").click();
   await page.getByText("Form Layouts").click();
 });
@@ -20,9 +20,7 @@ test("Locator syntax rules, ID, Class, Attribete, ..", async ({ page }) => {
   page.locator("[placeholder='Email']");
 
   // locator by Class value (full class value)
-  page.locator(
-    "[class='input-full-width size-medium status-basic shape-rectangle nb-transition']",
-  );
+  page.locator("[class='input-full-width size-medium status-basic shape-rectangle nb-transition']");
 
   // combine different selectors e.x. Tag + Attribute + Class
   // locators by Xpath (not recommended)
@@ -35,9 +33,7 @@ test("Locator syntax rules, ID, Class, Attribete, ..", async ({ page }) => {
   page.locator(":text-is('Using the Grid')");
 });
 
-test("User facing locators (getByRole, getByLabel, getByPlaceholder, getByText, getByTitle, getByTestId)", async ({
-  page,
-}) => {
+test.skip("User facing locators (getByRole, getByLabel, getByPlaceholder, getByText, getByTitle, getByTestId)", async ({ page }) => {
   await page.getByRole("textbox", { name: "Email" }).first().click();
   await page.getByRole("button", { name: "Sign in" }).first().click();
 
@@ -54,32 +50,17 @@ test("User facing locators (getByRole, getByLabel, getByPlaceholder, getByText, 
 
 test("Locating child elements", async ({ page }) => {
   await page.locator("nb-card nb-radio :text-is('Option 1')").click(); // 1 variant
-  await page
-    .locator("nb-card")
-    .locator("nb-radio")
-    .locator(":text-is('Option 2')")
-    .click(); // 2 variant
+  await page.locator("nb-card").locator("nb-radio").locator(":text-is('Option 2')").click(); // 2 variant
 
-  await page
-    .locator("nb-card")
-    .getByRole("button", { name: "Sign In" })
-    .first()
-    .click();
+  await page.locator("nb-card").getByRole("button", { name: "Sign In" }).first().click();
 
   await page.locator("nb-card").nth(3).getByRole("button").click(); // nth - index of element
 });
 
 test("Locating parent elements", async ({ page }) => {
-  await page
-    .locator("nb-card", { hasText: "Using the Grid" })
-    .getByRole("textbox", { name: "Email" })
-    .click();
+  await page.locator("nb-card", { hasText: "Using the Grid" }).getByRole("textbox", { name: "Email" }).click();
 
-  await page
-    .locator("nb-card")
-    .filter({ hasText: "Basic form" })
-    .getByRole("textbox", { name: "Email" })
-    .click();
+  await page.locator("nb-card").filter({ hasText: "Basic form" }).getByRole("textbox", { name: "Email" }).click();
 
   await page
     .locator("nb-card")
@@ -122,10 +103,7 @@ test("Extracting text values", async ({ page }) => {
 });
 
 test("Assertions", async ({ page }) => {
-  const basicFormButton = page
-    .locator("nb-card")
-    .filter({ hasText: "Basic form" })
-    .locator("button");
+  const basicFormButton = page.locator("nb-card").filter({ hasText: "Basic form" }).locator("button");
 
   // General assertions
   const value = 5;

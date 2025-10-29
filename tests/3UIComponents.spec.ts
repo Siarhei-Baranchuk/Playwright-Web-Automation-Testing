@@ -1,4 +1,6 @@
 import { test, expect } from "@playwright/test";
+import { PageManager } from "../page-objects/pageManager";
+import { faker } from "@faker-js/faker";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("http://localhost:4200");
@@ -38,6 +40,9 @@ test.describe("Form Layouts page", () => {
     await expect(usingGridForm.getByRole("radio", { name: "Option 1" })).toBeChecked();
 
     await usingGridForm.getByRole("radio", { name: "Option 2" }).check({ force: true });
+
+    // Screenshot
+    // await expect(usingGridForm).toHaveScreenshot()
 
     expect(await usingGridForm.getByRole("radio", { name: "Option 1" }).isChecked()).toBeFalsy();
 
@@ -228,4 +233,30 @@ test("Sliders - Mouse movement", async ({ page }) => {
   await page.mouse.move(x + 100, y + 900);
   await page.mouse.up();
   await expect(tempBox).toContainText("24");
+});
+
+test("Screenshots", async ({ page }) => {
+  const pm = new PageManager(page);
+  const randomFullName = faker.person.fullName();
+  const randomEmail = `${randomFullName.replace(" ", "")}${faker.number.int(100)}@test.com`;
+
+  await pm.navigateTo().formLayoutsPage();
+  await pm.onFormLayoutsPage().submitUsingGridFormWithCredentialsAndSelectOption("test3@test.com", "welcome", "Option 2");
+
+  // screenshot of full page
+  await page.screenshot({ path: "screenshots/formLayoutsPage.png" });
+  // screenshot of specific element
+  page.locator("nb-card", { hasText: "Inline form" }).screenshot({ path: "screenshots/inlineForm.png" });
+
+  await pm.onFormLayoutsPage().submitInlineFormWithNameEmailAndCheckbox(randomFullName, randomEmail, true);
+
+  // screenshot of full page
+  await page.screenshot({ path: "screenshots/EmailAndCheckbox.png" });
+
+  await pm.navigateTo().datePickerPage();
+  await pm.onDatepickerPage().selectCommonDatePickerDateFromToday(7);
+  await pm.onDatepickerPage().selectDatepickerWithRangeFromToday(8, 13);
+
+  // screenshot of full page
+  await page.screenshot({ path: "screenshots/datePickerPage.png" });
 });
