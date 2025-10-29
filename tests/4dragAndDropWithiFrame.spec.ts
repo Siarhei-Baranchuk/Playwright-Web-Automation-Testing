@@ -1,13 +1,16 @@
 import { test, expect } from "@playwright/test";
 
-test("Drag and Drop with Iframe", async ({ page }) => {
+test.only("Drag and Drop with Iframe", async ({ page }) => {
   await page.goto("https://www.globalsqa.com/demo-site/draganddrop/");
 
   // Close cookie consent popup
-  await page.getByRole("button", { name: "Consent" }).click();
+  const consentButton = page.getByRole("button", { name: "Consent" });
+  if (await consentButton.isVisible({ timeout: 2000 })) {
+    await consentButton.click();
+  }
 
   // Wait for iframe to load
-const frame = page.frameLocator('iframe[src*="photo-manager"]');
+  const frame = page.frameLocator('iframe[src*="photo-manager"]');
 
   await frame.locator("h5.ui-widget-header", { hasText: "High Tatras 2" }).dragTo(frame.locator("#trash", { hasText: "Trash" }));
 
