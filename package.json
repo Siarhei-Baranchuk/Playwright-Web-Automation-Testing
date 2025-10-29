@@ -8,7 +8,22 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve"
+    "start": "ng serve",
+    "test": "npx playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:chromium": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "test:mobile": "playwright test --project=mobile",
+    "test:parallel": "playwright test --workers=4",
+    "test:serial": "playwright test --workers=1",
+    "report": "playwright show-report",
+    "report:allure": "allure generate allure-results --clean && allure open",
+    "codegen": "playwright codegen",
+    "install:browsers": "playwright install",
+    "clean": "rimraf allure-results allure-report playwright-report test-results screenshots"
   },
   "dependencies": {
     "@angular/animations": "^14.2.12",
